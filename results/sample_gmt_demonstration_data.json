@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "notice": "DEMONSTRATION PLACEHOLDER ONLY - NOT ACTUAL GMT MEASUREMENTS",
+    "generated_for": "Dashboard Import Verification and UI Testing",
+    "created_at": "2026-11-20T00:00:00Z"
+  },
+  "runs": [
+    {
+      "run_id": "DEMO-RUN-LOW-001",
+      "timestamp_utc": "2026-11-20T10:15:00Z",
+      "scenario_name": "Python Carbon Experiment - LOW Workload",
+      "workload_mode": "LOW",
+      "duration_seconds": 30.0,
+      "total_energy_joules": 41.25,
+      "total_energy_wh": 0.01146,
+      "cpu_pkg_joules": 35.1,
+      "dram_joules": 6.15,
+      "carbon_emissions_gco2e": 0.00458,
+      "grid_carbon_intensity_g_kwh": 400.0,
+      "avg_cpu_utilization_pct": 9.2,
+      "peak_memory_mb": 22.4,
+      "hardware_source": "DEMO_PLACEHOLDER_RAPL",
+      "measurement_status": "DEMONSTRATION_PLACEHOLDER_NOT_REAL"
+    },
+    {
+      "run_id": "DEMO-RUN-HIGH-002",
+      "timestamp_utc": "2026-11-20T10:25:00Z",
+      "scenario_name": "Python Carbon Experiment - HIGH Workload",
+      "workload_mode": "HIGH",
+      "duration_seconds": 30.0,
+      "total_energy_joules": 214.8,
+      "total_energy_wh": 0.05967,
+      "cpu_pkg_joules": 192.4,
+      "dram_joules": 22.4,
+      "carbon_emissions_gco2e": 0.02387,
+      "grid_carbon_intensity_g_kwh": 400.0,
+      "avg_cpu_utilization_pct": 99.4,
+      "peak_memory_mb": 24.1,
+      "hardware_source": "DEMO_PLACEHOLDER_RAPL",
+      "measurement_status": "DEMONSTRATION_PLACEHOLDER_NOT_REAL"
+    }
+  ]
+}

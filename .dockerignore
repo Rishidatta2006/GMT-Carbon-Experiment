@@ -1,0 +1,25 @@
+# Git & IDE files
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Local experiment results & documentation (not needed inside container)
+results/*.csv
+results/*.json
+!results/.gitkeep
+docs/
+dashboard/
+tests/
+*.md
+
+# OS specific files
+.DS_Store
+Thumbs.db

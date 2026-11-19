@@ -1,0 +1,38 @@
+---
+# ==============================================================================
+# Green Metrics Tool (GMT) - Usage Scenario Configuration (Repository Root)
+# Official Documentation: https://docs.green-coding.io/
+# ==============================================================================
+# Default scenario discovered automatically by GMT hosted runner at repository root.
+# Configurable via GMT variable flags:
+#   python3 runner.py --uri . --variable "MODE=low" --variable "DURATION=30"
+#   python3 runner.py --uri . --variable "MODE=high" --variable "DURATION=30"
+# ==============================================================================
+
+name: "Python Application Carbon Footprint (__GMT_VAR_MODE__)"
+author: "B.Tech Computer Science Student <student@example.edu>"
+description: "Measures energy consumption (Joules/Wh) and carbon emissions (g CO2e) of Python 3.12 workload running in __GMT_VAR_MODE__ mode for __GMT_VAR_DURATION__ seconds."
+
+variables:
+  __GMT_VAR_MODE__: "low"
+  __GMT_VAR_DURATION__: "30"
+
+services:
+  app-runner:
+    build: .
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+flow:
+  - name: "Baseline Stabilization Sleep"
+    container: app-runner
+    commands:
+      - type: console
+        command: sleep 5
+        note: "Allows CPU P-states, RAPL domain, and power draw to settle to idle baseline"
+
+  - name: "Execute Computational Workload"
+    container: app-runner
+    commands:
+      - type: console
+        command: python app/app.py --mode __GMT_VAR_MODE__ --duration __GMT_VAR_DURATION__
+        note: "Runs the target Python workload profile under metric observation"

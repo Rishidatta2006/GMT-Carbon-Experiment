@@ -1,0 +1,45 @@
+---
+# ==============================================================================
+# Green Metrics Tool (GMT) - Dual Workload Comparison Scenario
+# ==============================================================================
+# Executes both LOW and HIGH workloads sequentially in a single GMT run
+# with stabilization and cool-down phases, allowing GMT phase-level comparison.
+# ==============================================================================
+
+name: "Python Carbon Experiment - LOW vs HIGH Comparison"
+author: "B.Tech Computer Science Student <student@example.edu>"
+description: "Measures and contrasts energy consumption and carbon emissions of LOW vs HIGH computational workloads in a single sequential execution flow."
+
+services:
+  app-runner:
+    build: .
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+flow:
+  - name: "Phase 1 - Baseline Stabilization"
+    container: app-runner
+    commands:
+      - type: console
+        command: sleep 5
+        note: "System idle power baseline"
+
+  - name: "Phase 2 - Execute LOW Workload"
+    container: app-runner
+    commands:
+      - type: console
+        command: python app/app.py --mode low --duration 30
+        note: "30s controlled low duty-cycle workload"
+
+  - name: "Phase 3 - Inter-phase Cooldown"
+    container: app-runner
+    commands:
+      - type: console
+        command: sleep 10
+        note: "Thermal and power dissipation stabilization"
+
+  - name: "Phase 4 - Execute HIGH Workload"
+    container: app-runner
+    commands:
+      - type: console
+        command: python app/app.py --mode high --duration 30
+        note: "30s continuous saturated CPU workload"

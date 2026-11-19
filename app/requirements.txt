@@ -1,0 +1,3 @@
+# Python dependencies for Green Metrics Tool (GMT) Carbon Footprint Experiment
+# The application is designed to be lightweight, robust, and container-friendly.
+psutil>=5.9.0

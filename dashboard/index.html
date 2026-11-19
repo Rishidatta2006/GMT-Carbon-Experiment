@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GMT Carbon Footprint Analyzer - Sustainable Computing Experiment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+
+  <!-- Top Navigation & Header -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="brand-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="nav-title">Green Metrics Tool (GMT) Analyzer</h1>
+        <span class="nav-subtitle">Software Carbon Footprint Benchmarking Dashboard</span>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <button id="themeToggleBtn" class="btn btn-secondary btn-sm" title="Toggle Light/Dark Theme">
+        <span id="themeIcon">☀️</span> <span id="themeText">Light</span>
+      </button>
+      <a href="https://docs.green-coding.io/" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+        GMT Docs ↗
+      </a>
+    </div>
+  </header>
+
+  <!-- Status Notification Banner -->
+  <div id="statusBanner" class="status-banner banner-warning">
+    <div class="banner-content">
+      <span class="badge badge-warning" id="bannerBadge">DEMONSTRATION PLACEHOLDER MODE</span>
+      <span id="bannerMessage">
+        Currently displaying educational baseline values. Real GMT measurements are pending.
+        Upload an official GMT export or CSV/JSON file to display measured results.
+      </span>
+    </div>
+    <div class="banner-actions">
+      <button class="btn btn-sm btn-ghost" id="bannerDismissBtn">Dismiss</button>
+    </div>
+  </div>
+
+  <main class="dashboard-container">
+
+    <!-- SECTION A: Project Overview & File Import -->
+    <section class="section card" id="overview-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">A. Project Overview & Data Ingestion</h2>
+          <p class="section-desc">
+            Comparative carbon footprint analysis of Python 3.12 computational workloads using Green Metrics Tool (GMT).
+          </p>
+        </div>
+        <div class="status-indicators">
+          <span class="indicator-pill indicator-active">
+            <span class="indicator-dot"></span> GMT ScenarioRunner: Configured
+          </span>
+          <span class="indicator-pill" id="dataStatusPill">
+            <span class="indicator-dot dot-pending" id="dataStatusDot"></span>
+            <span id="dataStatusText">Awaiting Real GMT Run</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Ingestion & Control Row -->
+      <div class="ingestion-grid">
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="fileInput" accept=".csv,.json" class="file-input">
+          <div class="drop-zone-content">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <p><strong>Click or drag & drop</strong> GMT result file (CSV or JSON)</p>
+            <span class="hint-text">Accepts <code>results_template.csv</code>, <code>metrics.green-coding.io</code> exports, or GMT JSON API responses</span>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <div class="btn-group">
+            <button class="btn btn-primary" id="triggerFileSelect">Browse File</button>
+            <button class="btn btn-secondary" id="loadDemoBtn">Load Demo Data</button>
+            <button class="btn btn-ghost" id="resetBtn">Reset</button>
+          </div>
+          <div class="file-metadata" id="fileMetadata">
+            <span class="meta-label">Active Source:</span>
+            <span class="meta-val" id="activeSourceLabel">Demonstration Placeholder (Synthetic)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION B: Comparative KPI Cards -->
+    <section class="section" id="kpi-section">
+      <div class="section-header-compact">
+        <h2 class="section-title">B. Workload Measurement Comparison</h2>
+        <span class="badge" id="dataBadge">DEMO ESTIMATES</span>
+      </div>
+
+      <div class="kpi-grid">
+        <!-- Card 1: Energy Consumption -->
+        <div class="kpi-card">
+          <div class="kpi-card-header">
+            <span class="kpi-label">Total Energy Consumed</span>
+            <span class="kpi-icon energy-icon">⚡</span>
+          </div>
+          <div class="kpi-values-split">
+            <div class="kpi-sub-val">
+              <span class="sub-label">LOW Workload</span>
+              <span class="sub-num" id="kpiLowEnergy">41.25 <small>J</small></span>
+              <span class="sub-unit" id="kpiLowEnergyWh">(0.0115 Wh)</span>
+            </div>
+            <div class="kpi-divider">vs</div>
+            <div class="kpi-sub-val highlight-high">
+              <span class="sub-label">HIGH Workload</span>
+              <span class="sub-num" id="kpiHighEnergy">214.80 <small>J</small></span>
+              <span class="sub-unit" id="kpiHighEnergyWh">(0.0597 Wh)</span>
+            </div>
+          </div>
+          <div class="kpi-footer">
+            <span class="kpi-delta delta-high" id="kpiEnergyRatio">▲ +420.7% Higher Consumption</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Carbon Footprint -->
+        <div class="kpi-card">
+          <div class="kpi-card-header">
+            <span class="kpi-label">Estimated Carbon (CO₂e)</span>
+            <span class="kpi-icon carbon-icon">🌱</span>
+          </div>
+          <div class="kpi-values-split">
+            <div class="kpi-sub-val">
+              <span class="sub-label">LOW Workload</span>
+              <span class="sub-num" id="kpiLowCarbon">4.58 <small>mg</small></span>
+              <span class="sub-unit" id="kpiLowCarbonG">(0.0046 g)</span>
+            </div>
+            <div class="kpi-divider">vs</div>
+            <div class="kpi-sub-val highlight-high">
+              <span class="sub-label">HIGH Workload</span>
+              <span class="sub-num" id="kpiHighCarbon">23.87 <small>mg</small></span>
+              <span class="sub-unit" id="kpiHighCarbonG">(0.0239 g)</span>
+            </div>
+          </div>
+          <div class="kpi-footer">
+            <span class="kpi-delta delta-high" id="kpiCarbonRatio">▲ +421.2% Emissions Increase</span>
+          </div>
+        </div>
+
+        <!-- Card 3: CPU Utilization -->
+        <div class="kpi-card">
+          <div class="kpi-card-header">
+            <span class="kpi-label">Average CPU Utilization</span>
+            <span class="kpi-icon cpu-icon">💻</span>
+          </div>
+          <div class="kpi-values-split">
+            <div class="kpi-sub-val">
+              <span class="sub-label">LOW (Duty Cycle)</span>
+              <span class="sub-num" id="kpiLowCpu">9.2 <small>%</small></span>
+              <span class="sub-unit">Base + Poll</span>
+            </div>
+            <div class="kpi-divider">vs</div>
+            <div class="kpi-sub-val highlight-high">
+              <span class="sub-label">HIGH (Continuous)</span>
+              <span class="sub-num" id="kpiHighCpu">99.4 <small>%</small></span>
+              <span class="sub-unit">Saturated Core</span>
+            </div>
+          </div>
+          <div class="kpi-footer">
+            <span class="kpi-delta" id="kpiCpuRatio">10.8x Higher CPU Load</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Execution Duration -->
+        <div class="kpi-card">
+          <div class="kpi-card-header">
+            <span class="kpi-label">Controlled Duration</span>
+            <span class="kpi-icon time-icon">⏱️</span>
+          </div>
+          <div class="kpi-values-split">
+            <div class="kpi-sub-val">
+              <span class="sub-label">Target Duration</span>
+              <span class="sub-num">30.0 <small>s</small></span>
+              <span class="sub-unit">Baseline Control</span>
+            </div>
+            <div class="kpi-divider">=</div>
+            <div class="kpi-sub-val">
+              <span class="sub-label">Actual Wall Time</span>
+              <span class="sub-num" id="kpiDuration">30.0 <small>s</small></span>
+              <span class="sub-unit">Controlled Variable</span>
+            </div>
+          </div>
+          <div class="kpi-footer">
+            <span class="kpi-meta">Controlled variable for scientific isolation</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION C: Charts -->
+    <section class="section" id="charts-section">
+      <div class="section-header-compact">
+        <h2 class="section-title">C. Comparative Resource Visualizations</h2>
+      </div>
+
+      <div class="charts-grid">
+        <!-- Chart 1: Energy & Power Breakdown -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3 class="chart-title">Energy Consumption by Hardware Domain (Joules)</h3>
+            <span class="chart-legend">
+              <span class="legend-box pkg-box"></span> CPU PKG
+              <span class="legend-box dram-box"></span> DRAM
+            </span>
+          </div>
+          <div class="canvas-wrapper">
+            <canvas id="energyChart" width="500" height="240"></canvas>
+          </div>
+          <p class="chart-caption">
+            * Measures Intel RAPL CPU Package (PKG) and DRAM domains captured across the 30s benchmark.
+          </p>
+        </div>
+
+        <!-- Chart 2: Carbon Footprint Comparison -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3 class="chart-title">Estimated Carbon Emissions (mg CO₂e)</h3>
+            <span class="chart-subhead">Grid Carbon Intensity: <strong id="gridIntensityVal">400 g/kWh</strong></span>
+          </div>
+          <div class="canvas-wrapper">
+            <canvas id="carbonChart" width="500" height="240"></canvas>
+          </div>
+          <p class="chart-caption">
+            * Calculated using GSF SCI specification: <code>Emissions = Energy (kWh) × Grid Carbon Intensity (g/kWh)</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION D: Sustainability Analysis -->
+    <section class="section card" id="analysis-section">
+      <div class="section-header-compact">
+        <h2 class="section-title">D. Sustainability Engineering Analysis</h2>
+      </div>
+
+      <div class="analysis-grid">
+        <div class="analysis-block">
+          <h4>1. Energy Disparity & Proportionality</h4>
+          <p id="analysisDisparityText">
+            The HIGH workload consumed significantly more total energy than the LOW workload over the identical 30-second measurement window.
+            This demonstrates that computational intensity directly drives dynamic energy draw via CPU frequency scaling (P-states) and instruction retire rates.
+          </p>
+        </div>
+
+        <div class="analysis-block">
+          <h4>2. The Idle Power Baseline</h4>
+          <p>
+            Crucially, the LOW workload did <strong>not</strong> consume zero energy. Even under minimal activity (~9% CPU load), the system consumed an estimated ~41 Joules.
+            This illustrates static power dissipation: transistor leakage current, motherboards, DRAM refresh cycles, and OS scheduler overhead persist regardless of software load.
+          </p>
+        </div>
+
+        <div class="analysis-block">
+          <h4>3. Hardware Carbon vs Grid Coupling</h4>
+          <p>
+            Carbon emissions are directly proportional to electricity consumption modulated by regional grid carbon intensity ($I$).
+            Running high-intensity workloads during low-carbon grid hours or in renewable-dominant cloud regions can yield up to a 70% emissions reduction without code modifications.
+          </p>
+        </div>
+
+        <div class="analysis-block">
+          <h4>4. Software Efficiency Recommendations</h4>
+          <ul class="recommendation-list">
+            <li><strong>Algorithmic Optimization:</strong> Replacing $O(n^2)$ search/sort operations with $O(n \log n)$ reduces total active CPU cycles.</li>
+            <li><strong>Event-Driven Duty Cycles:</strong> Utilizing asynchronous event loops (e.g. <code>asyncio</code>) rather than busy-waiting polls allows CPU cores to enter deeper C-states (C6/C7).</li>
+            <li><strong>Workload Batching:</strong> Concentrating sporadic workloads into bursty batches maximizes the time CPU packages spend in low-power idle states.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION E: Measurement Evidence & Audit Trail -->
+    <section class="section card" id="evidence-section">
+      <div class="section-header-compact">
+        <h2 class="section-title">E. Measurement Evidence & Audit Trail</h2>
+        <span class="badge" id="evidenceBadge">PLACEHOLDER AUDIT TRAIL</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Workload Mode</th>
+              <th>Run Identifier</th>
+              <th>Timestamp (UTC)</th>
+              <th>Duration</th>
+              <th>Energy (J)</th>
+              <th>Carbon (g CO₂e)</th>
+              <th>CPU Load</th>
+              <th>Source / Provider</th>
+              <th>Audit Status</th>
+            </tr>
+          </thead>
+          <tbody id="evidenceTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="audit-notes">
+        <p>
+          <strong>Scientific Methodology:</strong> Energy measurements are isolated using Intel RAPL (Running Average Power Limit) / AMD Energy counters and Linux cgroup hardware subsystem metrics, filtered through Green Metrics Tool ScenarioRunner.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p>
+        Green Metrics Tool Carbon Footprint Experiment | B.Tech Sustainable Computing Assignment
+      </p>
+      <p class="footer-links">
+        <a href="https://github.com/green-coding-berlin/green-metrics-tool" target="_blank" rel="noopener">GMT GitHub</a>
+        • <a href="https://metrics.green-coding.io/" target="_blank" rel="noopener">GMT Measurement Cluster</a>
+        • <a href="https://greensoftware.foundation/" target="_blank" rel="noopener">Green Software Foundation</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

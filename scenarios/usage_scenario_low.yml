@@ -1,0 +1,31 @@
+---
+# ==============================================================================
+# Green Metrics Tool (GMT) - Dedicated LOW Workload Scenario
+# ==============================================================================
+# Focuses exclusively on measuring the LOW workload profile (controlled duty cycle).
+# Ideal for zero-parameter submission to https://metrics.green-coding.io/
+# ==============================================================================
+
+name: "Python Carbon Experiment - LOW Workload (30s)"
+author: "B.Tech Computer Science Student <student@example.edu>"
+description: "Measures energy consumption (Joules/Wh) and carbon emissions (g CO2e) of Python 3.12 controlled duty-cycle low CPU workload for 30 seconds."
+
+services:
+  app-runner:
+    build: .
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+flow:
+  - name: "Baseline Stabilization Sleep"
+    container: app-runner
+    commands:
+      - type: console
+        command: sleep 5
+        note: "Allows system baseline power to stabilize before benchmark begins"
+
+  - name: "Execute Low Workload"
+    container: app-runner
+    commands:
+      - type: console
+        command: python app/app.py --mode low --duration 30
+        note: "Executes 30s controlled low-CPU duty cycle"

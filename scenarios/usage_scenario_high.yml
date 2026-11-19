@@ -1,0 +1,31 @@
+---
+# ==============================================================================
+# Green Metrics Tool (GMT) - Dedicated HIGH Workload Scenario
+# ==============================================================================
+# Focuses exclusively on measuring the HIGH workload profile (continuous SHA-256).
+# Ideal for zero-parameter submission to https://metrics.green-coding.io/
+# ==============================================================================
+
+name: "Python Carbon Experiment - HIGH Workload (30s)"
+author: "B.Tech Computer Science Student <student@example.edu>"
+description: "Measures energy consumption (Joules/Wh) and carbon emissions (g CO2e) of Python 3.12 continuous CPU-intensive SHA-256 hashing workload for 30 seconds."
+
+services:
+  app-runner:
+    build: .
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+flow:
+  - name: "Baseline Stabilization Sleep"
+    container: app-runner
+    commands:
+      - type: console
+        command: sleep 5
+        note: "Allows system baseline power to stabilize before benchmark begins"
+
+  - name: "Execute High Workload"
+    container: app-runner
+    commands:
+      - type: console
+        command: python app/app.py --mode high --duration 30
+        note: "Executes 30s saturated CPU SHA-256 cryptographic stress workload"
