@@ -1,42 +1,26 @@
 ---
-# ==============================================================================
-# Green Metrics Tool (GMT) - Usage Scenario Configuration
-# Official Documentation: https://docs.green-coding.io/
-# ==============================================================================
-# This scenario utilizes GMT's native variable substitution:
-#   - __GMT_VAR_MODE__     : 'low' or 'high' (default: 'low')
-#   - __GMT_VAR_DURATION__ : duration in seconds (default: '30')
-#
-# Override via CLI:
-#   python3 runner.py --uri . --variable "MODE=high" --variable "DURATION=30"
-# ==============================================================================
-
-name: "Python Application Carbon Footprint (__GMT_VAR_MODE__)"
-author: "B.Tech Computer Science Student <student@example.edu>"
-description: "Measures energy consumption (Joules/Wh) and carbon emissions (g CO2e) of Python 3.12 workload running in __GMT_VAR_MODE__ mode for __GMT_VAR_DURATION__ seconds."
-
-variables:
-  __GMT_VAR_MODE__: "low"
-  __GMT_VAR_DURATION__: "30"
+name: "Python Carbon Experiment - LOW Workload"
+author: "B.Tech Computer Science Student"
+description: "Measures energy consumption and carbon emissions of a Python low CPU workload using Green Metrics Tool."
 
 services:
   app-runner:
     build:
-      context: ..
+      context: .
       dockerfile: Dockerfile
     entrypoint: ["tail", "-f", "/dev/null"]
 
 flow:
-  - name: "Baseline Stabilization Sleep"
+  - name: "Baseline Stabilization"
     container: app-runner
     commands:
       - type: console
-        command: sleep 5
-        note: "Allows CPU P-states, RAPL domain, and power draw to settle to idle baseline"
+        command: "sleep 5"
+        note: "Allow baseline power measurements to stabilize"
 
-  - name: "Execute Computational Workload"
+  - name: "Execute LOW Workload"
     container: app-runner
     commands:
       - type: console
-        command: python app/app.py --mode __GMT_VAR_MODE__ --duration __GMT_VAR_DURATION__
-        note: "Runs the target Python workload profile under metric observation"
+        command: "python app/app.py --mode low --duration 30"
+        note: "Execute the 30-second LOW CPU workload"
