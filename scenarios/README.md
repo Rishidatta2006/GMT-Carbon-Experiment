@@ -31,7 +31,9 @@ variables:
 # Infrastructure & Container specification
 services:
   app-runner:
-    build: .
+    build:
+      context: ..
+      dockerfile: Dockerfile
     entrypoint: ["tail", "-f", "/dev/null"]
 
 # Runtime interaction sequence
@@ -46,16 +48,25 @@ flow:
 
 ### Key Architectural Concepts
 
-1. **`services` & Keep-Alive Mechanism:**
+1. **Docker Build Context Resolution for Nested Scenarios:**
+   When GMT executes a scenario located in a subdirectory (e.g. `scenarios/usage_scenario_low.yml`), GMT resolves relative paths in `build` relative to the scenario file's directory. By specifying:
+   ```yaml
+   build:
+     context: ..
+     dockerfile: Dockerfile
+   ```
+   The build context is shifted up to the repository root. This ensures that the container builder locates the root `Dockerfile` and all referenced source files (`app/requirements.txt` and `app/app.py`) correctly.
+
+2. **`services` & Keep-Alive Mechanism:**
    GMT orchestrates containers in distinct phases: `CHECKOUT`, `BUILD`, `BOOT`, `RUNTIME`, and `TEARDOWN`. During the `BOOT` phase, the container is started, and metric providers (RAPL, cgroups, perf counters) attach to the container PID/cgroup namespace. If a container exits immediately after running its CMD, GMT aborts the run. Overriding `entrypoint: ["tail", "-f", "/dev/null"]` guarantees the container remains alive, ready to execute interactive flow commands.
 
-2. **`flow` & Phase Metrics:**
+3. **`flow` & Phase Metrics:**
    Every entry in `flow` represents an isolated benchmark phase. GMT's metric providers record metrics continually, tagging metric samples with the active flow step. This enables phase-level energy breakdown (e.g., differentiating baseline idle power from active computation).
 
-3. **`type: console` Execution:**
+4. **`type: console` Execution:**
    GMT uses `docker exec` under strict POSIX shell parameters (`-o errexit -o nounset -o pipefail`) to execute commands inside the designated container.
 
-4. **Variables (`__GMT_VAR_*__`):**
+5. **Variables (`__GMT_VAR_*__`):**
    Variables allow runtime parameter injection without modifying the file. The GMT runner replaces matching tokens prior to execution.
 
 ---

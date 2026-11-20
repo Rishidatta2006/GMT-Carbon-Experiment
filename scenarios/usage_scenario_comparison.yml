@@ -12,7 +12,9 @@ description: "Measures and contrasts energy consumption and carbon emissions of 
 
 services:
   app-runner:
-    build: .
+    build:
+      context: ..
+      dockerfile: Dockerfile
     entrypoint: ["tail", "-f", "/dev/null"]
 
 flow:

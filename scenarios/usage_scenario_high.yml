@@ -12,7 +12,9 @@ description: "Measures energy consumption (Joules/Wh) and carbon emissions (g CO
 
 services:
   app-runner:
-    build: .
+    build:
+      context: ..
+      dockerfile: Dockerfile
     entrypoint: ["tail", "-f", "/dev/null"]
 
 flow:

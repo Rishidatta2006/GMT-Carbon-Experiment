@@ -55,6 +55,40 @@ def test_scenario_services_block(scenario_path):
 
 
 @pytest.mark.parametrize("scenario_path", ALL_SCENARIOS)
+def test_scenario_build_context_resolves_dockerfile(scenario_path):
+    """
+    Verify that for each scenario, the build context and dockerfile
+    resolve correctly to the physical Dockerfile on disk.
+    This prevents 'FileNotFoundError: Dockerfile ... not found' errors in GMT.
+    """
+    scenario_dir = os.path.dirname(os.path.abspath(scenario_path))
+    with open(scenario_path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+
+    services = data.get("services", {})
+    for s_name, s_conf in services.items():
+        build_conf = s_conf.get("build")
+        if build_conf is None:
+            continue
+
+        if isinstance(build_conf, str):
+            context_path = os.path.normpath(os.path.join(scenario_dir, build_conf))
+            dockerfile_path = os.path.join(context_path, "Dockerfile")
+        elif isinstance(build_conf, dict):
+            context_rel = build_conf.get("context", ".")
+            dockerfile_rel = build_conf.get("dockerfile", "Dockerfile")
+            context_path = os.path.normpath(os.path.join(scenario_dir, context_rel))
+            dockerfile_path = os.path.normpath(os.path.join(context_path, dockerfile_rel))
+        else:
+            pytest.fail(f"Unexpected build config type: {type(build_conf)}")
+
+        assert os.path.isdir(context_path), \
+            f"Build context path '{context_path}' does not exist for scenario {scenario_path}"
+        assert os.path.isfile(dockerfile_path), \
+            f"Dockerfile '{dockerfile_path}' not found from build context in {scenario_path}"
+
+
+@pytest.mark.parametrize("scenario_path", ALL_SCENARIOS)
 def test_scenario_flow_block(scenario_path):
     """Verify flow block contains valid command steps."""
     with open(scenario_path, "r", encoding="utf-8") as f:

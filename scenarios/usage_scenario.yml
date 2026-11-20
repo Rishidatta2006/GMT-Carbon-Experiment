@@ -21,7 +21,9 @@ variables:
 
 services:
   app-runner:
-    build: .
+    build:
+      context: ..
+      dockerfile: Dockerfile
     entrypoint: ["tail", "-f", "/dev/null"]
 
 flow:
